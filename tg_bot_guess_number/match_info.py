@@ -8,12 +8,12 @@ class MatchInfo:
     Он хранит информацию о партии, такую как загаданное число, количесто оставшихся попыток
     у пользователя, находится ли он в игре и хочет ли он начал игру.
     """
-    guessed_number: str
-    amount_try: str
-    in_game: bool
-    start_game: bool
+    guessed_number: int = -1
+    amount_try: int = 5 
+    in_game: bool = False
+    start_game: bool = False
 
-    def set_default(self):
+    def set_default_values(self):
         self.guessed_number = 0
         self.in_game = False
         self.start_game = False
