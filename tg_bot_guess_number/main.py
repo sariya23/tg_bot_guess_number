@@ -8,6 +8,8 @@ from random import randint
 from config import settings
 from match_info import MatchInfo
 from bot_answers import BotAnswers
+from available_answers import AvailableAnswers
+
 
 match_info = MatchInfo()
 dp = Dispatcher()
@@ -67,13 +69,13 @@ async def main():
     dp.message.register(cancel_game, Command(commands="cancel"))
     dp.message.register(
         start_game,
-        lambda msg: msg.text.lower() in ("yes", "да", "давай", "go", "ок")
+        lambda msg: msg.text.lower() in AvailableAnswers.AGREE_GAME
         and not match_info.in_game
         and match_info.start_game,
     )
     dp.message.register(
         exit_game,
-        lambda msg: msg.text.lower() in ("no", "нет", "не")
+        lambda msg: msg.text.lower() in AvailableAnswers.DISAGREE
         and not match_info.in_game
         and match_info.start_game,
     )
