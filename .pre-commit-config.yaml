@@ -7,7 +7,6 @@ repos:
   hooks:
     # Run the linter.
     - id: ruff
-      args: [ weather_app/main.py ]
 - repo: https://github.com/pre-commit/mirrors-mypy
   rev: 'v1.8.0'
   hooks:

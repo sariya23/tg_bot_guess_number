@@ -4,7 +4,6 @@ from aiogram.types import Message
 
 import asyncio
 from random import randint
-import dataclasses
 
 from config import settings
 
