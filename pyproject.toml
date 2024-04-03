@@ -9,8 +9,12 @@ readme = "README.md"
 python = "^3.11"
 aiogram = "^3.4.1"
 pydantic-settings = "^2.2.1"
+ruff = "^0.3.5"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+ignore = ['E501', 'E712']
