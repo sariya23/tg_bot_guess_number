@@ -7,7 +7,7 @@ from random import randint
 
 from config import settings
 from match_info import MatchInfo
-
+from bot_answers import BotAnswers
 
 match_info = MatchInfo()
 dp = Dispatcher()
@@ -15,33 +15,28 @@ dp = Dispatcher()
 
 async def process_start(message: Message):
     match_info.start_game = True
-    await message.answer(
-        f'Привет, {message.from_user.username}!\nХочешь сыгарать в игру "Угадай число"?\nНапишии мне Да или Нет'
-    )
+    await message.answer(BotAnswers.greet(message.from_user.username))
 
 
 async def cancel_game(message: Message):
     match_info.set_default_values()
-    await message.answer(
-        "Отменяю текущую игру. Чтобы начать играть заново введи команду /start"
-    )
-
+    await message.answer(BotAnswers.CANCEL_GAME)
 
 async def start_game(message: Message):
     match_info.start_game = True
     match_info.in_game = True
     match_info.guessed_number = randint(1, 100)
-    await message.answer("Начнем! Я загадал число от 1 до 100. У тебя будет 5 попыток")
+    await message.answer(BotAnswers.START_MATCH)
 
 
 async def guess_number(message: Message):
     message_text = message.text
 
     if not message_text.isdigit():
-        await message.answer(f"{message_text} - не число. Ты угадываешь числа, а не что-то другое. Не буду снимать количество попыток, может ты просто упал на клавиатуру")
+        await message.answer(BotAnswers.not_digit)
         return
     elif match_info.amount_try == 1:
-        await message.answer(f"Ты проиграл, у тебя кончились попытки.\nЯ загадывал число {match_info.guessed_number}\nЧтобы сыграть еще введи команду /start")
+        await message.answer(BotAnswers.lose_match(match_info.guessed_number))
         match_info.set_default_values()
         return
     
@@ -49,13 +44,13 @@ async def guess_number(message: Message):
 
     if user_number > match_info.guessed_number:
         match_info.amount_try -= 1
-        await message.answer(f"Твое число больше загаданного.\nУ тебя осталось {match_info.amount_try} попыток(и)")
+        await message.answer(BotAnswers.greater_guessed_number(match_info.amount_try))
     elif user_number < match_info.guessed_number:
         match_info.amount_try -= 1
-        await message.answer(f"Твое число меньше загаданного.\nУ тебя осталось {match_info.amount_try} попыток(и)")
+        await message.answer(BotAnswers.less_guessed_number(match_info.amount_try))
     else:
         match_info.amount_try -= 1
-        await message.answer(f"Ура, ты выиграл!\nТы справился за {5 - match_info.amount_try} попыток(и)")
+        await message.answer(BotAnswers.win_match(match_info.amount_try))
         match_info.set_default_values()
 
 
@@ -63,7 +58,7 @@ async def guess_number(message: Message):
 async def exit_game(message: Message):
     match_info.in_game = False
     match_info.start_game = False
-    await message.answer("Ну ладно(")
+    await message.answer(BotAnswers.EXIT_GAME)
 
 
 async def main():

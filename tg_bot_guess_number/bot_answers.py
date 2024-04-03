@@ -12,7 +12,7 @@ class BotAnswers:
         return f"{user_input} - не число. Ты угадываешь числа, а не что-то другое. Не буду снимать количество попыток, может ты просто упал на клавиатуру"
     
     @classmethod
-    def no_attempts(cls, guessed_number: int) -> str:
+    def lose_match(cls, guessed_number: int) -> str:
         return f"Ты проиграл, у тебя кончились попытки.\nЯ загадывал число {guessed_number}\nЧтобы сыграть еще введи команду /start"
 
     @classmethod
@@ -24,6 +24,6 @@ class BotAnswers:
         return f"Твое число меньше загаданного.\nУ тебя осталось {amount_try} попыток(и)"
     
     @classmethod
-    def win_game(cls, amount_try: int) -> str:
+    def win_match(cls, amount_try: int) -> str:
         return f"Ура, ты выиграл!\nТы справился за {5 - amount_try} попыток(и)"
     
